@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import RobustScaler
+from sklearn.preprocessing import RobustScaler, StandardScaler
 import jax.numpy as jnp
 import jax
 import jax.nn as nn
@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 
 data = pd.read_csv('creditcard.csv')
 dataset = data.to_numpy()
+
+fraud_data = dataset[data_np[:, -1] == 1]
 
 # initialize neural network for encoder
 n1, n2, n3, n4, n5 = 31, 23, 19, 17, 8
@@ -132,14 +134,17 @@ def loss_fn(params_encoder, params_decoder, batch):
 history_loss = []
 
 num_epochs = 1000
-learning_rate = 0.01
-batch_size = 128
+learning_rate = 0.1
+batch_size = 32
 
-scaler = RobustScaler(with_centering=True, with_scaling=True, quantile_range=(25.0, 75.0), unit_variance=False)
-dataset[:, [0, 29]] = scaler.fit_transform(dataset[:, [0, 29]])
+scaler = StandardScaler()
+dataset[:, :-1] = scaler.fit_transform(dataset[:, :-1])
+# scaler = RobustScaler(with_centering=True, with_scaling=True, quantile_range=(25.0, 75.0), unit_variance=False)
+# dataset[:, [0, 29]] = scaler.fit_transform(dataset[:, [0, 29]])
 
 # Use jnp.array to ensure compatibility with JAX
-small_dataset = jnp.array(dataset)
+# small_dataset = jnp.array(dataset)
+small_dataset = jnp.array(dataset[:1000])
 
 key = jax.random.PRNGKey(0)
 for epoch in range(num_epochs):
