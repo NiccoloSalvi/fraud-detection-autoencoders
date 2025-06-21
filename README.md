@@ -21,7 +21,7 @@ This project is a replication of the paper **"Combining Autoencoders and Deep Le
 ## 🔧 Getting Started
 1. **Clone the repository**
    ```sh
-   git clone https://github.com/yourusername/fraud-detection-autoencoders.git
+   git clone https://github.com/NiccoloSalvi/fraud-detection-autoencoders.git
    ```
 2. **Navigate to the directory**
    ```sh
