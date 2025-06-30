@@ -1,0 +1,11 @@
+\section{Background and Reproduction Objectives}
+
+Credit card fraud detection has traditionally relied upon supervised machine learning techniques such as logistic regression, decision trees, and classical ensemble methods (e.g., random forests and gradient boosting). However, the inherent data imbalance in fraud detection datasets severely limits these traditional methods, resulting in low precision and a high rate of false positives.
+
+Recent advances in deep learning offer promising solutions. Particularly, autoencoders have emerged as powerful tools due to their ability to learn effective representations of transaction data, thus providing an unsupervised or semi-supervised approach to fraud detection. Additionally, Long Short-Term Memory (LSTM) networks, especially those augmented with attention mechanisms (ALSTM), have proven effective in modeling sequential transaction data by dynamically emphasizing informative temporal patterns.
+
+The core objective of this project is to replicate and evaluate the effectiveness of an existing methodology integrating these techniques, specifically autoencoders, ALSTM, and gradient boosting frameworks, as presented in prior research. In replicating this approach, we aim to validate its efficacy on widely-used benchmark datasets, confirm its robustness to severe class imbalance, and identify potential areas for improvement or optimization in both training procedures and model architectures.
+
+To achieve these objectives, the project systematically follows the established approach: an autoencoder is trained solely on fraudulent samples to learn their distinctive features and generate realistic synthetic fraud data. These generated samples undergo a further refinement step using a Support Vector Machine (SVM) to eliminate unrealistic or unrepresentative synthetic examples, thereby enhancing the training set quality. Subsequently, the cleaned, balanced dataset is employed to train an ALSTM-based classification model wrapped within a gradient boosting ensemble to achieve optimal predictive performance.
+
+Through this structured replication, we also explore the impact of model hyperparameters, regularization techniques, and training strategies on model performance, seeking to provide clear, reproducible guidelines and insights that contribute toward advancing research in anomaly and fraud detection.

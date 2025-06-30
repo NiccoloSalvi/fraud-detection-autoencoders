@@ -1,0 +1,64 @@
+\section{Theoretical Background}
+This section introduces the core machine learning techniques used in our fraud detection framework. Each method was selected for its specific strengths in addressing the challenges posed by imbalanced datasets, temporal dependencies, and anomaly detection. We provide a concise overview of Autoencoders, Support Vector Machines (SVM), Recurrent Neural Networks (RNN) and Long Short-Term Memory (LSTM) architectures with attention mechanisms, and Gradient Boosting, highlighting their relevance and applicability to our problem.
+
+\subsection{Autoencoders}
+Autoencoders\cite{Rumelhart1986LearningRB} are a class of neural networks designed to learn efficient codings of input data in an unsupervised manner. They consist of two main components: an encoder, which compresses the input into a lower-dimensional latent representation, and a decoder, which reconstructs the input from this latent space. The network is trained to minimize the difference between the original input and its reconstruction, effectively learning to capture the most salient features of the data. Autoencoders are particularly useful in anomaly detection tasks, where the model is trained on normal data and expected to perform poorly on anomalous inputs that deviate from the learned patterns.
+
+\subsection{SVM}
+Support Vector Machines (SVMs)\cite{10.1023/A:1022627411411} are supervised learning models used for classification and regression tasks. They operate by finding the optimal hyperplane that separates data points of different classes with the maximum margin (distance of closest point to the boundary). In high-dimensional spaces, or when data is not linearly separable, SVMs utilize kernel functions to map inputs into higher-dimensional feature spaces where a linear separator may exist. SVMs are valued for their robustness and effectiveness in dealing with small to medium-sized datasets, especially in cases where class boundaries are well-defined.
+
+\subsection{ALSTM}
+\subsubsection{Recurrent Neural Networks}
+Traditional neural networks typically assume inputs are independent and identically distributed, neglecting temporal or sequential dependencies among data points. However, in real-world tasks such as credit card fraud detection, transactions often exhibit meaningful sequential patterns and contextual relationships that are essential for accurate classification.
+
+Recurrent Neural Networks (RNNs)\cite{rumelhart1985learning} are explicitly designed to address this limitation by incorporating internal states or memories, allowing the network to retain information from previous inputs. Unlike feedforward neural networks, RNNs maintain and update hidden states using recurrent connections, enabling them to effectively capture temporal dependencies within sequential data. Consequently, RNNs are well-suited for modeling transaction sequences and identifying complex, evolving fraud patterns.
+
+\subsubsection{Long Short-Term Memory Networks (LSTM)}
+Long Short-Term Memory (LSTM)\cite{6795963} networks were specifically developed to overcome the limitations of standard RNNs. The key advantage of LSTMs is their ability to retain relevant context over extended periods, making them particularly effective for capturing long-term sequential dependencies.
+
+An LSTM network achieves this through specialized gating mechanisms that control the flow of information within the network's hidden states. Each LSTM cell comprises three primary gates:
+
+\begin{itemize}
+    \item \textbf{Forget Gate}: Determines which information from previous hidden states should be discarded.
+    \item \textbf{Input Gate}: Decides which new information should be stored in the hidden state.
+    \item \textbf{Output Gate}: Controls what part of the hidden state should be exposed at the output.
+\end{itemize}
+
+Collectively, these gates enable the LSTM to manage memory selectively, preserving essential information across longer sequences and discarding irrelevant or outdated context, thereby overcoming the vanishing gradient issue inherent in standard RNNs.
+
+\subsubsection{Attention Mechanisms}
+While LSTMs significantly enhance the capability to capture long-term dependencies, they still process sequences linearly, giving equal implicit attention to all elements in a sequence. Attention mechanisms were introduced to overcome this limitation by dynamically assigning weights to different elements within a sequence based on their relevance to the task at hand~\cite{bahdanau2016neuralmachinetranslationjointly}.
+
+Specifically, the attention mechanism computes a context vector as a weighted sum of the hidden states produced by the LSTM network. The weights assigned to each hidden state reflect the importance of each transaction within the sequence. This selective focus enables the model to effectively highlight significant events, drastically improving performance on tasks such as fraud detection, where identifying the critical anomalous patterns within sequences is essential.
+
+Formally, given hidden states \(h_1, h_2, \dots, h_n\), the attention mechanism computes weights \(a_{ij}\) using:
+
+\[
+a_{ij} = \frac{\exp(\alpha(s_{i-1}, h_j))}{\sum_{k=1}^{n}\exp(\alpha(s_{i-1}, h_k))}
+\]
+
+where \(\alpha(s_{i-1}, h_j)\) is an alignment function measuring compatibility between the hidden state \(h_j\) and the previous decoder state \(s_{i-1}\). The context vector \(C_i\) is then computed as:
+
+\[
+C_i = \sum_{j=1}^{n} a_{ij}h_j
+\]
+
+Through this focused selection of relevant transaction information, attention-based LSTM networks significantly enhance fraud detection performance by capturing critical sequential patterns more effectively than traditional methods.
+
+\subsection{Gradient Boosting}
+Gradient Boosting\cite{4a848dd1-54e3-3c3c-83c3-04977ded2e71} is a powerful ensemble learning technique used primarily for classification and regression tasks.
+Unlike bagging methods, which train multiple models in parallel and combine their outputs, boosting builds an ensemble sequentially, where each new model attempts to correct the errors of its predecessors. Boosting aims at reducing bias without increasing variance to obtain a more powerful learner. 
+
+The core idea behind gradient boosting is to train a sequence of weak learners—typically decision trees—where each learner focuses on minimizing the residual errors made by the combined ensemble so far. The process begins by fitting a model to the data and computing the loss (e.g., classification error). The next model is then trained to predict the gradient of the loss function with respect to the predictions, effectively reducing the overall error step by step.
+
+Formally, given a loss function $L(y, \hat{y})$ and a model $F_m(x)$ at iteration $m$, gradient boosting updates the model as:
+
+\[
+F_{m+1}(x) = F_m(x) + \gamma_m h_m(x)
+\]
+
+where $h_m(x)$ is a new weak learner trained to approximate the negative gradient of the loss with respect to $F_m(x)$, and $\gamma_m$ is a step size (also known as the learning rate).
+
+This iterative approach enables gradient boosting to build highly accurate models by combining the strengths of many simple learners. Moreover, the method can be adapted to support a variety of base learners beyond decision trees, such as neural networks, which allows integration with deep learning architectures.
+
+Gradient boosting is especially useful in imbalanced classification problems, as it can adaptively focus more on difficult or rare instances—such as fraudulent transactions—by increasing their influence in subsequent iterations. When combined with models like attention-based LSTMs, gradient boosting provides a robust framework capable of learning complex data patterns while reducing overfitting.
